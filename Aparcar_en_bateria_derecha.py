@@ -78,17 +78,15 @@ def maniobra (self, msg):
     orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
     (roll, pitch, yaw) = euler_from_quaternion (orientation_list)
     aparcado = 0
-    print (yaw)
 
   
     if control3 == 0:
       target1 = yaw + target_const
-      print (target1)
       control3 = 1
 
     if yaw < target1 and pos1 == 0 and pos2 == 0:
       self.drive_msg.drive.steering_angle = -0.70
-      self.drive_msg.drive.speed = -0.4
+      self.drive_msg.drive.speed = -0.3
    
  
     if yaw >= target1 or yaw >= 3 or yaw2 == 4:
@@ -100,7 +98,7 @@ def maniobra (self, msg):
 
       elif pos1 == 1 and pos2 == 0:
         if position_x < objetivo:
-          self.drive_msg.drive.speed = -0.4
+          self.drive_msg.drive.speed = -0.3
         elif position_x >= objetivo:
           self.drive_msg.drive.speed = 0.0
           pos2 == 1
@@ -168,7 +166,7 @@ class Parking_Linea_der:
       detection = deteccion(self, msg)
       self.drive_pub.publish(self.drive_msg)
 
-    if np.min(msg.ranges) < 0.1:
+    if np.min(msg.ranges) < 0.2:
       seguridad = 1
 
     
@@ -200,7 +198,6 @@ class Parking_Linea_der:
       colocado = colocacion(self, msg)
 
     elif detection == 1 and colocado == 1 and aparcado == 0:
-      print("hola")
       aparcado = maniobra(self, msg)
 
     else:
@@ -208,6 +205,8 @@ class Parking_Linea_der:
     
     if seguridad == 1:
       self.drive_msg.drive.speed = 0.0
+      if detection == 0:
+        print ("Parada de seguridad")
       detection = 1
       colocado = 1
       aparcado = 1

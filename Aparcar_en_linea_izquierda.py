@@ -182,7 +182,7 @@ class Parking_Linea_izq:
       self.drive_pub.publish(self.drive_msg)
 
 
-    if np.min(msg.ranges) < 0.1:
+    if np.min(msg.ranges) < 0.2:
       seguridad = 1
 
     
@@ -214,6 +214,8 @@ class Parking_Linea_izq:
     
     if seguridad == 1:
       self.drive_msg.drive.speed = 0.0
+      if detection == 0:
+        print ("Parada de seguridad")
       detection = 1
       colocado = 1
       aparcado = 1

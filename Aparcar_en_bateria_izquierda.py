@@ -91,7 +91,7 @@ def maniobra (self, msg):
 
     if yaw > target1 and pos1 == 0 and pos2 == 0: 
       self.drive_msg.drive.steering_angle = 0.7
-      self.drive_msg.drive.speed = -0.4
+      self.drive_msg.drive.speed = -0.3
  
     if yaw <= target1 or yaw <= -3 or yaw2 == 4:
       if pos1 == 0 and pos2 == 0:
@@ -101,7 +101,7 @@ def maniobra (self, msg):
         objetivo = position_x + 0.40
       elif pos1 == 1 and pos2 == 0:
         if position_x < objetivo:
-          self.drive_msg.drive.speed = -0.4
+          self.drive_msg.drive.speed = -0.3
         elif position_x >= objetivo:
           self.drive_msg.drive.speed = 0.0
           pos2 == 1
@@ -169,7 +169,7 @@ class Parking_Linea_der:
       detection = deteccion(self, msg)
       self.drive_pub.publish(self.drive_msg)
 
-    if np.min(msg.ranges) < 0.1:
+    if np.min(msg.ranges) < 0.2:
       seguridad = 1
 
     
@@ -209,6 +209,8 @@ class Parking_Linea_der:
     
     if seguridad == 1:
       self.drive_msg.drive.speed = 0.0
+      if detection == 0:
+        print ("Parada de seguridad")
       detection = 1
       colocado = 1
       aparcado = 1
